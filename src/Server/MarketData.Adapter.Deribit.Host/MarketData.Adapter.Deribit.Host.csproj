@@ -24,4 +24,7 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
   </ItemGroup>
+ <ItemGroup>
+   <ProjectReference Include="..\MarketData.Adapter.Deribit\MarketData.Adapter.Deribit.csproj" />
+ </ItemGroup>
 </Project>

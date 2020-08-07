@@ -1,6 +1,6 @@
 using System;
 
-namespace MarketDataAdapterService.Configuration
+namespace MarketData.Adapter.Deribit.Configuration
 {
     public class Authentification
     {

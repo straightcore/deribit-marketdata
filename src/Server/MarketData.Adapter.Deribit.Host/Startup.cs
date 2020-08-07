@@ -1,6 +1,5 @@
-using System;
-using System.Threading.Tasks;
-using MarketDataAdapterService.Configuration;
+using MarketData.Adapter.Deribit;
+using MarketData.Adapter.Deribit.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
