@@ -33,23 +33,23 @@ namespace MarketData.Adapter.Deribit.Spec.Drivers
             config.AddJsonStream(TransformStringToStream(this.configuration));
         }
 
-        protected override void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
-        {
-            base.ConfigureServices(hostContext, services);
-            services.Remove(services.First(descriptor => descriptor.ImplementationType == typeof(MarketDataAdapterService)));
-            services.AddSingleton<IHostedService>(CreateHostedServiceSubstitute);
-        }
+        // protected override void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
+        // {
+        //     base.ConfigureServices(hostContext, services);
+        //     // services.Remove(services.First(descriptor => descriptor.ImplementationType == typeof(MarketDataAdapterService)));
+        //     // services.AddSingleton<IHostedService>(CreateHostedServiceSubstitute);
+        // }
 
-        private IHostedService CreateHostedServiceSubstitute(IServiceProvider serviceProvider)
-        {
-            return Substitute.ForPartsOf<MarketDataAdapterService>(serviceProvider.GetRequiredService<ILogger<MarketDataAdapterService>>(),
-                 serviceProvider.GetRequiredService<ServiceConfig>(),
-                 serviceProvider.GetRequiredService<IValidator<ServiceConfig>>(),
-                 serviceProvider.GetRequiredService<IInstrumentOfQuery>());
-        }
+        // private IHostedService CreateHostedServiceSubstitute(IServiceProvider serviceProvider)
+        // {
+        //     return Substitute.ForPartsOf<MarketDataAdapterService>(serviceProvider.GetRequiredService<ILogger<MarketDataAdapterService>>(),
+        //          serviceProvider.GetRequiredService<ServiceConfig>(),
+        //          serviceProvider.GetRequiredService<IValidator<ServiceConfig>>(),
+        //          serviceProvider.GetRequiredService<IInstrumentOfQuery>());
+        // }
 
         protected override void ConfigureServicesHttpClient(IServiceCollection services)
-        {     
+        {
             services.AddSingleton<IHttpClientFactory, TestHttpClientFactory>();
         }
 

@@ -9,12 +9,14 @@ namespace MarketData.Adapter.Deribit.Spec.Drivers
 {
     public class TestHostBuilder 
     {
+        private const string LoggingConfigurationPart= "{ \"LogLevel\": { \"Default\": \"Debug\", \"Microsoft\": \"Warning\" }, \"Debug\": { \"LogLevel\": { \"Default\": \"Debug\", \"Microsoft.Hosting\": \"Trace\" } }, \"Console\": { \"IncludeScopes\": true, \"LogLevel\": { \"Default\": \"Debug\", \"Microsoft\": \"Warning\" } } }";
         private ServiceConfig serviceConfiguration = new ServiceConfig();
         
+        private IEnumerable<InstrumentConfig> instruments = null;
 
-        public TestHostBuilder SetInstrumentConfiguration(IEnumerable<MarketData.Adapter.Deribit.Configuration.InstrumentConfig> instruments)
+        public TestHostBuilder SetInstrumentConfiguration(IEnumerable<InstrumentConfig> instruments)
         {
-            this.serviceConfiguration.Instruments = instruments?.ToArray();
+            this.instruments = instruments;
             return this;
         }
 
@@ -38,7 +40,7 @@ namespace MarketData.Adapter.Deribit.Spec.Drivers
 
         public IHost Build()
         {
-            return new StartupBdd(new TestAppSettings() { ServiceConfiguration = this.serviceConfiguration })
+            return new StartupBdd(new TestAppSettings() { ServiceConfiguration = this.serviceConfiguration, Instruments = this.instruments?.ToArray(), Logging = LoggingConfigurationPart })
                         .CreateBuilder()
                         .Build();
         }

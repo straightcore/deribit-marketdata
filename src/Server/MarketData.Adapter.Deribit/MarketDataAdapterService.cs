@@ -6,6 +6,7 @@ using FluentValidation;
 using MarketData.Adapter.Deribit.Api.v2;
 using MarketData.Adapter.Deribit.Configuration;
 using MarketData.Adapter.Deribit.Configuration.Validators;
+using MarketData.Adapter.Deribit.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -15,20 +16,20 @@ namespace MarketData.Adapter.Deribit
     public class MarketDataAdapterService : IHostedService, IDisposable
     {
         private readonly ILogger logger;
-        private readonly ServiceConfig configuration;
+        private readonly IInstrumentFetcherService instrumentFetcherService;
+        private readonly IValidationConfigurationService validationService;
         private bool isDisposed = false;
-        private readonly IValidator<ServiceConfig> configValidator;
-
         public bool IsStart { get; set; }
-        private readonly IInstrumentOfQuery instrumentQuery;
 
-        public MarketDataAdapterService(ILogger<MarketDataAdapterService> logger, ServiceConfig configuration, IValidator<ServiceConfig> configValidator, IInstrumentOfQuery instrumentQuery)
+        public MarketDataAdapterService(ILogger<MarketDataAdapterService> logger,
+                                        IInstrumentFetcherService instrumentFetcherService,
+                                        IValidationConfigurationService validationService)
         {
-            this.instrumentQuery = instrumentQuery ?? throw new ArgumentNullException(nameof(instrumentQuery));
-            this.configValidator = configValidator ?? throw new ArgumentNullException(nameof(configValidator));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.configuration = (configuration ?? throw new ArgumentNullException(nameof(configuration)));
+            this.instrumentFetcherService = instrumentFetcherService ?? throw new ArgumentNullException(nameof(instrumentFetcherService));
+            this.validationService = validationService ?? throw new ArgumentNullException(nameof(validationService));
         }
+
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             if (IsStart)
@@ -36,33 +37,10 @@ namespace MarketData.Adapter.Deribit
                 this.logger.LogWarning("Service is already start");
                 return;
             }
-            await ValidateConfiguration(cancellationToken);
-            if(this.configuration.Instruments?.Any() ?? false)
-            {
-                var instrumentsJsonRpc = await Task.WhenAll(this.configuration.Instruments?.Select(instrument => this.instrumentQuery.GetInstrumentsAsync(instrument, cancellationToken)));
-                foreach(var instrument in instrumentsJsonRpc.SelectMany(item => item))
-                {
-                    this.logger.LogInformation(JsonConvert.SerializeObject(instrument));
-                }
-            }
+            await validationService.StartAsync(cancellationToken);
+            await instrumentFetcherService.StartAsync(cancellationToken);
             this.logger.LogInformation("MarketData Service is started");
             IsStart = true;
-        }
-
-        private async Task ValidateConfiguration(CancellationToken cancellationToken)
-        {
-            this.logger.LogInformation("Validating configuration...");
-            this.logger.LogDebug($"configuration: {JsonConvert.SerializeObject(this.configuration)}");
-            var result = await this.configValidator.ValidateAsync(this.configuration, cancellationToken);
-            if (!result.IsValid)
-            {
-                this.logger.LogCritical("Configuration of service is not valid");
-                foreach (var error in result.Errors)
-                {
-                    this.logger.LogError($"[{error.ErrorCode}] {error.ErrorMessage}");
-                }
-                throw new AggregateException("Configuration of service is not valid", result.Errors.Select(error => new Exception($"{error.ErrorCode}: {error.ErrorMessage}")));
-            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

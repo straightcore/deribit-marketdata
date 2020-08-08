@@ -19,7 +19,7 @@ namespace MarketData.Adapter.Deribit.Configuration
         public int FetchInterval {get;set;}
         public bool TestMode { get; set; }
 
-        [JsonProperty("instruments")]
-        public InstrumentConfig[] Instruments { get; set; }
+        // [JsonProperty("instruments")]
+        // public InstrumentConfig[] Instruments { get; set; }
     }
 }

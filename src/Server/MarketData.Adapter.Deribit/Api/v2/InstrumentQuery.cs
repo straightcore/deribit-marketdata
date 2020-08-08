@@ -3,19 +3,20 @@ using System.Threading.Tasks;
 using MarketData.Adapter.Deribit.Configuration;
 using MarketData.Adapter.Deribit.Json.rpc;
 using System.Net.Http;
-using Newtonsoft.Json;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace MarketData.Adapter.Deribit.Api.v2
 {
-    public interface IInstrumentOfQuery
+    public interface IInstrumentQuery
     {
         Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken);
     }
 
-    public class InstrumentOfQuery : IInstrumentOfQuery
+    public class InstrumentQuery : IInstrumentQuery
     {
         private readonly ServiceConfig serviceConfig;
         private readonly IHttpClientFactory httpClientFactory;
@@ -36,7 +37,7 @@ namespace MarketData.Adapter.Deribit.Api.v2
             }
         }
 
-        public InstrumentOfQuery(IHttpClientFactory httpClientFactory, ServiceConfig serviceConfig)
+        public InstrumentQuery(IHttpClientFactory httpClientFactory, ServiceConfig serviceConfig)
         {
             this.httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
             this.serviceConfig = serviceConfig ?? throw new ArgumentNullException(nameof(serviceConfig));
@@ -47,6 +48,7 @@ namespace MarketData.Adapter.Deribit.Api.v2
             HttpResponseMessage response = null;
             using (var client = httpClientFactory.CreateClient())
             {
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 response = await client.GetAsync($"{this.Url}get_instruments?currency={configuration.Currency}&kind={configuration.Kind}&expired={configuration.Expired}");
             }
             if (response == null)
@@ -56,7 +58,8 @@ namespace MarketData.Adapter.Deribit.Api.v2
             cancellationToken.ThrowIfCancellationRequested();
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"{response.StatusCode}: {response.ReasonPhrase}");
+                return Enumerable.Empty<InstrumentDto>();
+                // throw new Exception($"{response.StatusCode}: {response.ReasonPhrase}");
             }
             var contentStr = await response.Content.ReadAsStringAsync();
             cancellationToken.ThrowIfCancellationRequested();

@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 using MarketData.Adapter.Deribit.Configuration;
 using MarketData.Adapter.Deribit.Json.rpc;
 using Microsoft.Extensions.Logging;
+using Org.OpenAPITools.Client;
 
 namespace MarketData.Adapter.Deribit.Api.v2
 {
-    public class InstrumentOfQueryLogger : IInstrumentOfQuery
+    public class InstrumentQueryLogger : IInstrumentQuery
     {
-        private readonly IInstrumentOfQuery decorated;
+        private readonly IInstrumentQuery decorated;
         private readonly ILogger logger;
-        public InstrumentOfQueryLogger(IInstrumentOfQuery decorated, ILogger logger)
+        public InstrumentQueryLogger(IInstrumentQuery decorated, ILogger logger)
         {
             this.logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             this.decorated = decorated ?? throw new System.ArgumentNullException(nameof(decorated));
@@ -28,7 +29,14 @@ namespace MarketData.Adapter.Deribit.Api.v2
                 task.ConfigureAwait(true);
                 return task;
             }
-            catch (Exception exception)
+            catch(ApiException ex)
+            {
+                this.logger.LogError("Exception when calling MarketDataApi.PublicGetInstrumentsGet: " + ex.Message );
+                this.logger.LogDebug("Status Code: "+ ex.ErrorCode);
+                this.logger.LogDebug(ex.StackTrace);
+                throw ex;
+            }
+            catch(Exception exception)
             {
                 this.logger.LogError(exception, "En error occured while executing http request");
                 throw exception;

@@ -9,5 +9,8 @@ namespace MarketData.Adapter.Deribit.Spec.Drivers
     public class TestAppSettings
     {
         public ServiceConfig ServiceConfiguration { get; set; }
+        public InstrumentConfig[] Instruments { get; set; }
+
+        public string Logging { get; set; }
     }
 }

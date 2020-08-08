@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using FluentValidation;
 using MarketData.Adapter.Deribit;
 using MarketData.Adapter.Deribit.Api.v2;
 using MarketData.Adapter.Deribit.Configuration;
 using MarketData.Adapter.Deribit.Configuration.Validators;
+using MarketData.Adapter.Deribit.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,13 +37,16 @@ namespace MarketData.Adapter.Deribit.Host
         {
             services.AddOptions();
             services.Configure<ServiceConfig>(hostContext.Configuration.GetSection("ServiceConfiguration"));
+            services.Configure<List<InstrumentConfig>>(hostContext.Configuration.GetSection("Instruments"));
             services.AddSingleton<ServiceConfig>(provider => provider.GetRequiredService<IOptions<ServiceConfig>>().Value);
+            services.AddSingleton<IEnumerable<InstrumentConfig>>(provider => provider.GetRequiredService<IOptions<List<InstrumentConfig>>>().Value);
             services.AddSingleton<IHostedService, MarketDataAdapterService>();
-            services.AddTransient<InstrumentOfQuery>();
-            services.AddTransient<IInstrumentOfQuery>(provider =>
-                new InstrumentOfQueryLogger(provider.GetRequiredService<InstrumentOfQuery>(), provider.GetRequiredService<ILogger<InstrumentOfQuery>>()));
-
-            services.AddSingleton<InstrumentConfigurationValidator>()
+            services.AddTransient<OpenAPIInstrumentQuery>();
+            services.AddTransient<IInstrumentQuery>(provider =>
+                new InstrumentQueryLogger(provider.GetRequiredService<OpenAPIInstrumentQuery>(), provider.GetRequiredService<ILogger<OpenAPIInstrumentQuery>>()));
+            services.AddTransient<IInstrumentFetcherService, InstrumentFetcherService>();
+            services.AddTransient<IValidationConfigurationService, ValidationConfigurationService>();
+            services.AddSingleton<IValidator<InstrumentConfig>, InstrumentConfigurationValidator>()
                     .AddSingleton<IValidator<ServiceConfig>, ServiceConfigValidator>();
             ConfigureServicesHttpClient(services);
         }
