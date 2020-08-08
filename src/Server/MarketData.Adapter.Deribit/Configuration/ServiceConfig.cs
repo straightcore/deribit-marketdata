@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace MarketData.Adapter.Deribit.Configuration
 {
@@ -11,13 +12,14 @@ namespace MarketData.Adapter.Deribit.Configuration
         /// <summary>
         /// Allows to configure the authentification arguments to connect at the platform
         /// </summary>
-        public Authentification Authentification { get; set; }
+        public AuthentificationConfig Authentification { get; set; }
         /// <summary>
         /// Gets or sets frequency of fetch action. The unit is seconds. 
         /// </summary>
         public int FetchInterval {get;set;}
         public bool TestMode { get; set; }
 
-        public Instrument[] Instruments { get; set; }
+        [JsonProperty("instruments")]
+        public InstrumentConfig[] Instruments { get; set; }
     }
 }

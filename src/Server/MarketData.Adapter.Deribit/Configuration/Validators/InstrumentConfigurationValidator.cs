@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace MarketData.Adapter.Deribit.Configuration.Validators
 {
-    public class InstrumentConfigurationValidator : AbstractValidator<Instrument>
+    public class InstrumentConfigurationValidator : AbstractValidator<InstrumentConfig>
     {
         public InstrumentConfigurationValidator()
         {

@@ -19,7 +19,7 @@ namespace MarketData.Adapter.Deribit.Configuration.Validators
             When(config => config.Instruments != null, () => RuleForEach(config => config.Instruments).CustomAsync(ValidateInstrument));
         }
 
-        private async Task ValidateInstrument(Instrument config, CustomContext context, CancellationToken cancellationToken)
+        private async Task ValidateInstrument(InstrumentConfig config, CustomContext context, CancellationToken cancellationToken)
         {
             var result = await this.instrumentValidator.ValidateAsync(config)
                             .ConfigureAwait(false);

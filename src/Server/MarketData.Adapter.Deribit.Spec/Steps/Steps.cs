@@ -40,7 +40,7 @@ namespace MarketData.Adapter.Deribit.Spec.StepDefinitions
         [Given(@"instrument configuration section with:")]
         public void GivenInstrumentConfigurationSectionWith(Table table)
         {
-            var instruments = table.CreateSet<Instrument>();
+            var instruments = table.CreateSet<InstrumentConfig>();
             var hosterBuilder = this.scenarioContext.Get<TestHostBuilder>("hostBuilder");
             hosterBuilder.SetInstrumentConfiguration(instruments);
         }

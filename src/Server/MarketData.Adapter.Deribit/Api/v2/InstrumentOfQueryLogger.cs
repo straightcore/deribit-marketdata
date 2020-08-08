@@ -18,7 +18,7 @@ namespace MarketData.Adapter.Deribit.Api.v2
             this.decorated = decorated ?? throw new System.ArgumentNullException(nameof(decorated));
 
         }
-        public Task<JsonRpcEnvelopeDto<InstrumentDto[]>> GetInstrumentsAsync(Instrument configuration, CancellationToken cancellationToken)
+        public Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken)
         {
             this.logger.LogDebug("Fetch instrument Currency '{0}' and Kind '{1}'", configuration.Currency, configuration.Kind);
             try

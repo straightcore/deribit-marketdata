@@ -12,7 +12,7 @@ namespace MarketData.Adapter.Deribit.Api.v2
 {
     public interface IInstrumentOfQuery
     {
-        Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(Instrument configuration, CancellationToken cancellationToken);
+        Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken);
     }
 
     public class InstrumentOfQuery : IInstrumentOfQuery
@@ -42,7 +42,7 @@ namespace MarketData.Adapter.Deribit.Api.v2
             this.serviceConfig = serviceConfig ?? throw new ArgumentNullException(nameof(serviceConfig));
         }
         
-        public async Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(Instrument configuration, CancellationToken cancellationToken)
+        public async Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken)
         {
             HttpResponseMessage response = null;
             using (var client = httpClientFactory.CreateClient())

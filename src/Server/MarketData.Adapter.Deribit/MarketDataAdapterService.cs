@@ -40,7 +40,7 @@ namespace MarketData.Adapter.Deribit
             if(this.configuration.Instruments?.Any() ?? false)
             {
                 var instrumentsJsonRpc = await Task.WhenAll(this.configuration.Instruments?.Select(instrument => this.instrumentQuery.GetInstrumentsAsync(instrument, cancellationToken)));
-                foreach(var instrument in instrumentsJsonRpc.SelectMany(jsonRpc => jsonRpc.result))
+                foreach(var instrument in instrumentsJsonRpc.SelectMany(item => item))
                 {
                     this.logger.LogInformation(JsonConvert.SerializeObject(instrument));
                 }

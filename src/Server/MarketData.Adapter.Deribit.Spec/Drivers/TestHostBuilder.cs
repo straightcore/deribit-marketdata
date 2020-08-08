@@ -12,7 +12,7 @@ namespace MarketData.Adapter.Deribit.Spec.Drivers
         private ServiceConfig serviceConfiguration = new ServiceConfig();
         
 
-        public TestHostBuilder SetInstrumentConfiguration(IEnumerable<MarketData.Adapter.Deribit.Configuration.Instrument> instruments)
+        public TestHostBuilder SetInstrumentConfiguration(IEnumerable<MarketData.Adapter.Deribit.Configuration.InstrumentConfig> instruments)
         {
             this.serviceConfiguration.Instruments = instruments?.ToArray();
             return this;
@@ -28,7 +28,7 @@ namespace MarketData.Adapter.Deribit.Spec.Drivers
 
         public TestHostBuilder SetAuthentificationConfiguration(string clientId, string clientSecret)
         {
-            this.serviceConfiguration.Authentification = new Authentification()
+            this.serviceConfiguration.Authentification = new AuthentificationConfig()
             {
                 ClientId = clientId,
                 ClientSecret = clientSecret

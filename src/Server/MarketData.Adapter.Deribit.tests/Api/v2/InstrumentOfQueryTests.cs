@@ -30,7 +30,7 @@ namespace MarketData.Adapter.Deribit.tests.Api.v2
                 TestMode = true,
             };
             var query = new InstrumentOfQuery(httpFactory, serviceConfig);
-            var configuration = new Instrument() { Currency = Currency.BTC, Kind = Kind.Future, Expired = false };
+            var configuration = new InstrumentConfig() { Currency = Currency.BTC, Kind = Kind.Future, Expired = false };
             var resultQuery = await query.GetInstrumentsAsync(configuration, CancellationToken.None);
             Assert.That(resultQuery, Is.Not.Null);
             httpFactory.Received(1).CreateClient(Arg.Any<string>());

@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 
 namespace MarketData.Adapter.Deribit.Configuration
 {
-    public class Instrument
+    public class InstrumentConfig
     {
         /// <summary>
         /// Gets or sets the currency for this intrument
