@@ -8,7 +8,7 @@ namespace MarketData.Adapter.Deribit.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Instruments",
+                name: "Trades",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),

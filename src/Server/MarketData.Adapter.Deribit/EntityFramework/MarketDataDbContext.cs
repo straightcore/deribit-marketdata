@@ -1,5 +1,5 @@
 using MarketData.Adapter.Deribit.Api.v2;
-using MarketData.Adapter.Deribit.Models;
+using MarketData.Deribit.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketData.Adapter.Deribit.EntityFramework

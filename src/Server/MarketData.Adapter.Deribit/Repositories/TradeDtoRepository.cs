@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MarketData.Adapter.Deribit.Api.v2;
 using MarketData.Adapter.Deribit.Converter;
-using MarketData.Adapter.Deribit.Models;
+using MarketData.Deribit.Models;
 
 namespace MarketData.Adapter.Deribit.Repositories
 {

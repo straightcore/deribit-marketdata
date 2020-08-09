@@ -64,7 +64,7 @@ namespace MarketData.Adapter.Deribit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Instruments");
+                    b.ToTable("Trades");
                 });
 #pragma warning restore 612, 618
         }

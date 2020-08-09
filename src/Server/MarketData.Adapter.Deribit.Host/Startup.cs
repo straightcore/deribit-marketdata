@@ -9,7 +9,7 @@ using MarketData.Adapter.Deribit.Converter;
 using MarketData.Adapter.Deribit.Converter.AutoMapper;
 using MarketData.Adapter.Deribit.EntityFramework;
 using MarketData.Adapter.Deribit.Job;
-using MarketData.Adapter.Deribit.Models;
+using MarketData.Deribit.Models;
 using MarketData.Adapter.Deribit.Repositories;
 using MarketData.Adapter.Deribit.Services;
 using Microsoft.Extensions.Configuration;

@@ -1,6 +1,6 @@
 using AutoMapper;
 using MarketData.Adapter.Deribit.Api.v2;
-using MarketData.Adapter.Deribit.Models;
+using MarketData.Deribit.Models;
 
 namespace MarketData.Adapter.Deribit.Converter.AutoMapper
 {

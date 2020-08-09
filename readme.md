@@ -16,7 +16,22 @@ Using C# and .netcore, implement a market data recorder for Deribit instruments 
 
 2. Time permitting, create a service for clients to retrieve the pricing data you've persisted above.
 
- 
+# How to start process
+
+1- The Daemon (or windows services) under "MarketData.Adapter.Deribit.Host" execute 
+```dos
+    1- dotnet build -c release 
+    2- cd bin/Release/netcoreapp3.1
+    3- start MarketData.Adapter.Deribit.Host.exe
+```
+2- Start the web API, under "MarketData.Deribit.WebAPI execute 
+
+```dos
+    1- dotnet build -c release
+    2- ***CMD run as Administrator***
+    3- cd bin/Release/netcoreapp3.1
+    4- **Run as Administrator** MarketData.Deribit.WebAPI.exe
+```
 
 > [!NOTE]
 > Deribit API References:
