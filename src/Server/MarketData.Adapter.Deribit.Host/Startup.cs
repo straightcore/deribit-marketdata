@@ -1,15 +1,23 @@
 using System.Collections.Generic;
+using AutoMapper;
 using FluentValidation;
 using MarketData.Adapter.Deribit;
 using MarketData.Adapter.Deribit.Api.v2;
 using MarketData.Adapter.Deribit.Configuration;
 using MarketData.Adapter.Deribit.Configuration.Validators;
+using MarketData.Adapter.Deribit.Converter;
+using MarketData.Adapter.Deribit.Converter.AutoMapper;
+using MarketData.Adapter.Deribit.EntityFramework;
+using MarketData.Adapter.Deribit.Job;
+using MarketData.Adapter.Deribit.Models;
+using MarketData.Adapter.Deribit.Repositories;
 using MarketData.Adapter.Deribit.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Quartz.Impl;
 
 namespace MarketData.Adapter.Deribit.Host
 {
@@ -41,14 +49,26 @@ namespace MarketData.Adapter.Deribit.Host
             services.AddSingleton<ServiceConfig>(provider => provider.GetRequiredService<IOptions<ServiceConfig>>().Value);
             services.AddSingleton<IEnumerable<InstrumentConfig>>(provider => provider.GetRequiredService<IOptions<List<InstrumentConfig>>>().Value);
             services.AddSingleton<IHostedService, MarketDataAdapterService>();
-            services.AddTransient<OpenAPIInstrumentQuery>();
-            services.AddTransient<IInstrumentQuery>(provider =>
-                new InstrumentQueryLogger(provider.GetRequiredService<OpenAPIInstrumentQuery>(), provider.GetRequiredService<ILogger<OpenAPIInstrumentQuery>>()));
-            services.AddTransient<IInstrumentFetcherService, InstrumentFetcherService>();
+            RequestConfigureServices(services);
+            services.AddTransient<IMarketDataFetcherService, MarketDataFetcherService>();
             services.AddTransient<IValidationConfigurationService, ValidationConfigurationService>();
             services.AddSingleton<IValidator<InstrumentConfig>, InstrumentConfigurationValidator>()
                     .AddSingleton<IValidator<ServiceConfig>, ServiceConfigValidator>();
             ConfigureServicesHttpClient(services);
+            services.AddSingleton<StdSchedulerFactory, StdSchedulerFactory>();
+            services.AddAutoMapper(typeof(TradeProfile));
+            services.AddTransient<IConverter<Trade, TradeDto>, AutoMapperTradeConverter>();
+            services.AddTransient<ITradeRepository<TradeDto>, TradeDtoRepository>()
+                    .AddTransient<ITradeRepository<Trade>, EntityFrameworkTradeRepository>();
+            services.AddTransient<DownloadMarketDataJobDetailBuilder>();
+            services.AddDbContext<MarketDataDbContext>();
+        }
+
+        protected virtual void RequestConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient<OpenAPIInstrumentQuery>();
+            services.AddTransient<IInstrumentQuery>(provider =>
+                new InstrumentQueryLogger(provider.GetRequiredService<OpenAPIInstrumentQuery>(), provider.GetRequiredService<ILogger<OpenAPIInstrumentQuery>>()));
         }
 
         protected virtual void ConfigureServicesHttpClient(IServiceCollection services)

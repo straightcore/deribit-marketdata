@@ -3250,7 +3250,7 @@ namespace Org.OpenAPITools.Api
             if (startSeq != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "start_seq", startSeq)); // query parameter
             if (endSeq != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "end_seq", endSeq)); // query parameter
             if (count != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "count", count)); // query parameter
-            if (includeOld != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "include_old", includeOld)); // query parameter
+            if (includeOld != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "include_old", includeOld?.ToString().ToLower() ?? "false")); // query parameter
             if (sorting != null) localVarQueryParams.AddRange(this.Configuration.ApiClient.ParameterToKeyValuePairs("", "sorting", sorting)); // query parameter
 
             // authentication (bearerAuth) required

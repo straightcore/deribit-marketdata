@@ -13,7 +13,7 @@ namespace MarketData.Adapter.Deribit.Api.v2
 {
     public interface IInstrumentQuery
     {
-        Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken);
+        Task<IEnumerable<InstrumentResponseDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken);
     }
 
     public class InstrumentQuery : IInstrumentQuery
@@ -43,7 +43,7 @@ namespace MarketData.Adapter.Deribit.Api.v2
             this.serviceConfig = serviceConfig ?? throw new ArgumentNullException(nameof(serviceConfig));
         }
         
-        public async Task<IEnumerable<InstrumentDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken)
+        public async Task<IEnumerable<InstrumentResponseDto>> GetInstrumentsAsync(InstrumentConfig configuration, CancellationToken cancellationToken)
         {
             HttpResponseMessage response = null;
             using (var client = httpClientFactory.CreateClient())
@@ -58,12 +58,12 @@ namespace MarketData.Adapter.Deribit.Api.v2
             cancellationToken.ThrowIfCancellationRequested();
             if (!response.IsSuccessStatusCode)
             {
-                return Enumerable.Empty<InstrumentDto>();
+                return Enumerable.Empty<InstrumentResponseDto>();
                 // throw new Exception($"{response.StatusCode}: {response.ReasonPhrase}");
             }
             var contentStr = await response.Content.ReadAsStringAsync();
             cancellationToken.ThrowIfCancellationRequested();
-            return JsonConvert.DeserializeObject<JsonRpcEnvelopeDto<InstrumentDto[]>>(contentStr)?.result ?? Enumerable.Empty<InstrumentDto>();
+            return JsonConvert.DeserializeObject<JsonRpcEnvelopeDto<InstrumentResponseDto[]>>(contentStr)?.result ?? Enumerable.Empty<InstrumentResponseDto>();
         }
     }
 }

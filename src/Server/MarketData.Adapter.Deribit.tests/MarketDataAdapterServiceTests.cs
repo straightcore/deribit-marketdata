@@ -43,7 +43,7 @@ namespace MarketData.Adapter.Deribit.tests
         private ServiceProvider NothingThrowException(ServiceProvider provider)
         {
             ServiceSubstituteNotThrowException(provider.GetRequiredService<IValidationConfigurationService>());
-            ServiceSubstituteNotThrowException(provider.GetRequiredService<IInstrumentFetcherService>());
+            ServiceSubstituteNotThrowException(provider.GetRequiredService<IMarketDataFetcherService>());
             return provider;
         }
 
@@ -58,7 +58,7 @@ namespace MarketData.Adapter.Deribit.tests
             return new ServiceCollection()
                                         .AddLogging(builder => builder.AddConsole())
                                         .AddSingleton<IValidationConfigurationService>(Substitute.For<IValidationConfigurationService>())
-                                        .AddSingleton<IInstrumentFetcherService>(Substitute.For<IInstrumentFetcherService>())
+                                        .AddSingleton<IMarketDataFetcherService>(Substitute.For<IMarketDataFetcherService>())
                                         .AddTransient<MarketDataAdapterService>()
                                         .BuildServiceProvider();
         }

@@ -41,7 +41,7 @@ namespace MarketData.Adapter.Deribit.tests.Api.v2
         //             , Arg.Any<CancellationToken>());            
         // }
 
-        private static Tuple<IHttpClientFactory, MockHttpMessageHandler> BuildHttpClientFactory(JsonRpcEnvelopeDto<InstrumentDto> response)
+        private static Tuple<IHttpClientFactory, MockHttpMessageHandler> BuildHttpClientFactory(JsonRpcEnvelopeDto<InstrumentResponseDto> response)
         {
             var httpFactory = Substitute.For<IHttpClientFactory>();
             var fakeHttpMessageHandler = Substitute.ForPartsOf<MockHttpMessageHandler>(new HttpResponseMessage()

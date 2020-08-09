@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace MarketData.Adapter.Deribit.Api.v2
 {
-    public class InstrumentDto
+    public class InstrumentResponseDto
     {
         [JsonProperty("leverage")]
         public int? Leverage { get; set; }

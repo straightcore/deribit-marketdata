@@ -6,6 +6,7 @@ using FluentValidation;
 using MarketData.Adapter.Deribit.Api.v2;
 using MarketData.Adapter.Deribit.Configuration;
 using MarketData.Adapter.Deribit.Configuration.Validators;
+using MarketData.Adapter.Deribit.EntityFramework;
 using MarketData.Adapter.Deribit.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,18 +17,21 @@ namespace MarketData.Adapter.Deribit
     public class MarketDataAdapterService : IHostedService, IDisposable
     {
         private readonly ILogger logger;
-        private readonly IInstrumentFetcherService instrumentFetcherService;
+        private readonly IMarketDataFetcherService instrumentFetcherService;
         private readonly IValidationConfigurationService validationService;
+        private readonly MarketDataDbContext dbContext;
         private bool isDisposed = false;
         public bool IsStart { get; set; }
 
         public MarketDataAdapterService(ILogger<MarketDataAdapterService> logger,
-                                        IInstrumentFetcherService instrumentFetcherService,
-                                        IValidationConfigurationService validationService)
+                                        IMarketDataFetcherService instrumentFetcherService,
+                                        IValidationConfigurationService validationService,
+                                        MarketDataDbContext dbContext)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.instrumentFetcherService = instrumentFetcherService ?? throw new ArgumentNullException(nameof(instrumentFetcherService));
             this.validationService = validationService ?? throw new ArgumentNullException(nameof(validationService));
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -68,7 +72,7 @@ namespace MarketData.Adapter.Deribit
             }
             if (isDisposing)
             {
-
+                this.dbContext.Dispose();
             }
             this.isDisposed = true;
         }

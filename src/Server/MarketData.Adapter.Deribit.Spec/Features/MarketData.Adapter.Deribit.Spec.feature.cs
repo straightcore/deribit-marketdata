@@ -74,6 +74,102 @@ namespace MarketData.Adapter.Deribit.Spec.Features
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("The daemon market data adapter is start the service is available")]
+        [NUnit.Framework.CategoryAttribute("version1")]
+        public virtual void TheDaemonMarketDataAdapterIsStartTheServiceIsAvailable()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "version1"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The daemon market data adapter is start the service is available", null, tagsOfScenario, argumentsOfScenario);
+#line 6
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 7
+    testRunner.Given("a configuration file", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 8
+    testRunner.And("instrument configuration section", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 9
+ testRunner.When("the service is started", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+    testRunner.Then("the service is available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("The daemon fetch the BTC Future when it is starting")]
+        public virtual void TheDaemonFetchTheBTCFutureWhenItIsStarting()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The daemon fetch the BTC Future when it is starting", null, tagsOfScenario, argumentsOfScenario);
+#line 20
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 21
+    testRunner.Given("a configuration file", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "currency",
+                            "kind",
+                            "expired"});
+                table1.AddRow(new string[] {
+                            "BTC",
+                            "future",
+                            "false"});
+#line 22
+    testRunner.And("instrument configuration section with:", ((string)(null)), table1, "And ");
+#line hidden
+#line 25
+    testRunner.When("the service is starting", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 26
+    testRunner.Then("the service fetchs all instruments", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("The daemon fetch all instruments when it is starting")]
         public virtual void TheDaemonFetchAllInstrumentsWhenItIsStarting()
         {
@@ -103,28 +199,28 @@ this.ScenarioInitialize(scenarioInfo);
 #line 29
     testRunner.Given("a configuration file", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "currency",
                             "kind",
                             "expired"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "BTC",
                             "future",
                             "false"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "BTC",
                             "option",
                             "false"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "ETH",
                             "future",
                             "false"});
-                table1.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "ETH",
                             "option",
                             "false"});
 #line 30
-    testRunner.And("instrument configuration section with:", ((string)(null)), table1, "And ");
+    testRunner.And("instrument configuration section with:", ((string)(null)), table2, "And ");
 #line hidden
 #line 36
     testRunner.When("the service is starting", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

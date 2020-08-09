@@ -33,6 +33,13 @@ namespace MarketData.Adapter.Deribit.Spec.Drivers
             config.AddJsonStream(TransformStringToStream(this.configuration));
         }
 
+        protected override void RequestConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient<IInstrumentQuery, InstrumentQuery>();
+            // services.AddTransient<IInstrumentQuery>(provider =>
+            //     new InstrumentQueryLogger(provider.GetRequiredService<OpenAPIInstrumentQuery>(), provider.GetRequiredService<ILogger<OpenAPIInstrumentQuery>>()));
+        }
+
         // protected override void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
         // {
         //     base.ConfigureServices(hostContext, services);
