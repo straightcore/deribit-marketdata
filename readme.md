@@ -18,29 +18,39 @@ Using C# and .netcore, implement a market data recorder for Deribit instruments 
 
 # How to start process
 
-1- The Daemon (or windows services) under "MarketData.Adapter.Deribit.Host" execute 
+1. Use the build.bat to publish all projects under ./publish
+1. Open 2 cmd with **Run as Administrator**
+1. Start MarketData.Deribit.WebAPI
+1. Start MarketData.Adapter.Deribit.Host
+
+Note: to start process you have two choices:
+1. Windows use the ***exe*** file
+1. Otherwise, use the dotnet cli: `dotnet MarketData.Deribit.WebAPI.dll`
+
+> [!CAUTION]
+> [Obsolete]
+>1. The Daemon (or windows services) under "MarketData.Adapter.Deribit.>Host" execute 
 ```dos
-    1- dotnet build -c release 
-    2- cd bin/Release/netcoreapp3.1
-    3- start MarketData.Adapter.Deribit.Host.exe
+    1. dotnet build -c release 
+    2. cd bin/Release/netcoreapp3.1
+    3. start MarketData.Adapter.Deribit.Host.exe
 ```
-2- Start the web API, under "MarketData.Deribit.WebAPI execute 
+> [!CAUTION]
+>2. Start the web API, under "MarketData.Deribit.WebAPI execute 
 
 ```dos
-    1- dotnet build -c release
-    2- ***CMD run as Administrator***
-    3- cd bin/Release/netcoreapp3.1
-    4- **Run as Administrator** MarketData.Deribit.WebAPI.exe
+    1. dotnet build -c release
+    2. ***CMD run as Administrator***
+    3. cd bin/Release/netcoreapp3.1
+    4. **Run as Administrator** MarketData.Deribit.WebAPI.exe
 ```
 
 > [!NOTE]
 > Deribit API References:
 >
->* https://docs.deribit.com/v2/#deribit-api-v2-0-0
->
->* https://docs.deribit.com/v2/#public-get_instruments
->
->* https://docs.deribit.com/v2/#public-get_last_trades_by_instrument
+>- https://docs.deribit.com/v2/#deribit-api-v2-0-0
+>- https://docs.deribit.com/v2/#public-get_instruments
+>- https://docs.deribit.com/v2/#public-get_last_trades_by_instrument
 
 
 # Methodology
