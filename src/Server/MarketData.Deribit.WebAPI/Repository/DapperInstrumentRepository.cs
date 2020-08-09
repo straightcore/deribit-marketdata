@@ -1,39 +1,30 @@
-using MarketData.Deribit.Models;
 using System;
-using System.Data;
-using Dapper;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
+using Dapper;
 
 namespace MarketData.Deribit.WebAPI.Repository
 {
-    public interface ITradeRepository : IDisposable
+    public interface IInstrumentRepository : IDisposable
     {
-        Task<Trade> GetById(string id);
-        Task<IEnumerable<Trade>> GetByInstrumentName(string intrumentName);
+        Task<IEnumerable<InstrumentDto>> Get();
     }
 
-    public class DapperTradeRepository : ITradeRepository
+    public class DapperInstrumentRepository : IInstrumentRepository
     {
         private IDbConnection connection;
         private bool isDisposedValue;
 
-        public DapperTradeRepository(IDbConnection connection)
+        public DapperInstrumentRepository(IDbConnection connection)
         {
             this.connection = connection ?? throw new System.ArgumentNullException(nameof(connection));
-
         }
 
-        public Task<Trade> GetById(string id)
+        public Task<IEnumerable<InstrumentDto>> Get()
         {
             CheckIfDisposed();
-            return this.connection.QueryFirstAsync<Trade>("Select * from Trades where id=@identifier", new { identifier = id });
-        }
-
-        public Task<IEnumerable<Trade>> GetByInstrumentName(string intrumentName)
-        {
-            CheckIfDisposed();
-            return this.connection.QueryAsync<Trade>("Select * from Trades where InstrumentName=@name", new { name = intrumentName });
+            return this.connection.QueryAsync<InstrumentDto>("Select InstrumentName from Trades");
         }
 
         private void CheckIfDisposed()
@@ -72,6 +63,5 @@ namespace MarketData.Deribit.WebAPI.Repository
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

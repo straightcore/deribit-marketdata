@@ -1,0 +1,2 @@
+dotnet publish -c release  .\src\Server\MarketData.Adapter.Deribit.Host\MarketData.Adapter.Deribit.Host.csproj -o ./publish
+dotnet publish -c release  .\src\Server\MarketData.Deribit.WebAPI\MarketData.Deribit.WebAPI.csproj -o ./publish

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using MarketData.Deribit.WebAPI.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Data.SQLite;
 
 namespace MarketData.Deribit.WebAPI
 {
@@ -42,7 +45,22 @@ namespace MarketData.Deribit.WebAPI
             });
             services.AddSwaggerGen();
             // services.AddCors(options => options.AddPolicy(builder => builder.WithOrigins("http://*/api",  "https://*/api")));
-
+            services.AddTransient<ITradeRepository, DapperTradeRepository>();
+            services.AddTransient<IInstrumentRepository, DapperInstrumentRepository>();
+            services.AddSingleton<SQLiteConnectionStringBuilder>(serviceProvider => 
+                { 
+                    var builder = new SQLiteConnectionStringBuilder();
+                    builder.DataSource = Configuration.GetSection("SqliteFile").Value;
+                    return builder;
+                });
+            services.AddTransient<IDbConnection>(provider => 
+            {
+                var builder = provider.GetRequiredService<SQLiteConnectionStringBuilder>();
+                var connection = SQLiteFactory.Instance.CreateConnection();
+                connection.ConnectionString = builder.ConnectionString;
+                connection.Open();
+                return connection;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

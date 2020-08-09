@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MarketData.Deribit.WebAPI.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,18 +15,24 @@ namespace MarketData.Deribit.WebAPI.Controllers
     public class HistoricalTradeController : ControllerBase
     {
         private readonly ILogger<HistoricalTradeController> _logger;
+        private readonly ITradeRepository repository;
 
-        public HistoricalTradeController(ILogger<HistoricalTradeController> logger)
+        public HistoricalTradeController(ILogger<HistoricalTradeController> logger, ITradeRepository repository)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet]
-        [EnableCors]
-        
-        public IEnumerable<string> Get()
+        [HttpGet()]
+        public async Task<IActionResult> Get(string id)
         {
-            return new string[] { "value one from api version", "One"};
+            return Ok(await this.repository.GetById(id));
+        }
+        
+        [HttpGet("getByInstrumentName")]
+        public async Task<IActionResult> GetByInstrumentName(string instrument)
+        {
+            return Ok(await this.repository.GetByInstrumentName(instrument));
         }
     }
 }

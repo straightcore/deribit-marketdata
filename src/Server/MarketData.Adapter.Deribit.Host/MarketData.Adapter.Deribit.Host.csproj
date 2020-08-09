@@ -22,9 +22,10 @@
  <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.6" />
  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
  <PackageReference Include="Quartz" Version="3.1.0" />
+ <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.6" />
 </ItemGroup>
  <ItemGroup>
-      <None Update="appsettings.json">
+      <None Update="appsettings-daemon.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="marketData.db">

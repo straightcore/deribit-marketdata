@@ -18,6 +18,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Quartz.Impl;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
 
 namespace MarketData.Adapter.Deribit.Host
 {
@@ -61,7 +63,11 @@ namespace MarketData.Adapter.Deribit.Host
             services.AddTransient<ITradeRepository<TradeDto>, TradeDtoRepository>()
                     .AddTransient<ITradeRepository<Trade>, EntityFrameworkTradeRepository>();
             services.AddTransient<DownloadMarketDataJobDetailBuilder>();
-            services.AddDbContext<MarketDataDbContext>();
+            services.AddDbContext<MarketDataDbContext>(options => {
+                var builder =new SqliteConnectionStringBuilder();
+                builder.DataSource = hostContext.Configuration.GetSection("SqliteFile").Value;
+                options.UseSqlite(builder.ConnectionString);
+            });
         }
 
         protected virtual void RequestConfigureServices(IServiceCollection services)
@@ -90,7 +96,7 @@ namespace MarketData.Adapter.Deribit.Host
         private static string GetConfigurationFileOrDefault(string[] args)
         {
             var cmdOptions = new ConfigurationBuilder().AddCommandLine(args).Build();
-            var configFile = cmdOptions.GetValue<string>("config", "appsettings.json");
+            var configFile = cmdOptions.GetValue<string>("config", "appsettings-daemon.json");
             return configFile;
         }
     }

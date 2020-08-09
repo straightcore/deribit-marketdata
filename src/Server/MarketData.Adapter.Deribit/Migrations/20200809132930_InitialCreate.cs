@@ -28,7 +28,7 @@ namespace MarketData.Adapter.Deribit.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Instruments", x => x.Id);
+                    table.PrimaryKey("PK_Trades", x => x.Id);
                 });
         }
 

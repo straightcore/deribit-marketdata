@@ -6,9 +6,25 @@ namespace MarketData.Adapter.Deribit.EntityFramework
 {
     public class MarketDataDbContext : DbContext
     {
-        public DbSet<Trade> Instruments { get; set; }
+        public DbSet<Trade> Trades { get; set; }
+        
+        // public MarketDataDbContext()
+        // {
+            
+        // }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=marketData.db");
+        public MarketDataDbContext(DbContextOptions<MarketDataDbContext> options)
+            : base(options)
+        {
+            // if (string.IsNullOrEmpty(connectionString))
+            // {
+            //     throw new System.ArgumentException($"'{nameof(connectionString)}' cannot be null or empty", nameof(connectionString));
+            // }
+
+            // this.connectionString = connectionString;
+        }
+
+        // protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //     => options.UseSqlite("Data Source=marketData.db");
     }
 }
